@@ -1,0 +1,18 @@
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/api/v1")
+def version_1():
+    return {"message": "Hello from v1"}, 200
+
+@app.route("/api/v2")
+def version_2():
+    return {"message": "Hello from v2"}, 200
+
+@app.route("/healthz")
+def health_check():
+    return "OK", 200
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)

@@ -1,0 +1,27 @@
+# Terraform
+terraform.tfstate
+terraform.tfstate.backup
+.terraform/
+
+# Google Cloud service account credentials
+*.json
+application_default_credentials.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+.env
+
+# VSCode
+.vscode/
+
+# Docker
+*.log
+*.tar
+
+# OS files
+.DS_Store
+Thumbs.db
