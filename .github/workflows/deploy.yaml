@@ -1,0 +1,59 @@
+name: Build and Deploy Google Kubernetes Engine
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  PROJECT_ID: advance-display-462217-r9
+  REGION: northamerica-northeast2
+  CLUSTER_NAME: ci-cd-gke-cluster
+  REPOSITORY: flask-api-repo
+  IMAGE_NAME: flask-api
+  DEPLOYMENT_NAME: flask-api
+
+jobs:
+  build-and-deploy:
+   runs-on: ubuntu-latest
+
+   steps:
+    - name: Checkout code repo
+      uses: actions/checkout@v3
+    
+    - name: Google authentication
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Set up Google Cloud SDK
+      uses: google-github-actions/setup-gcloud
+      with:
+        project_id: ${{ env.PROJECT_ID }}
+        
+    - name: Configure Docker to use the Google Cloud registry
+      run: | 
+        gcloud auth configure-docker ${{env.REGION}}-docker.pkg.dev
+
+    - name: Build Docker image
+      run: |
+        docker build -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:latest
+
+    - name: Push Docker image to Google Container Registry
+      run: |
+        docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:latest
+
+    - name: Get GKE CRED
+      run: |
+        gcloud container clusters get-credentials ${{ env.CLUSTER_NAME }} --region ${{ env.REGION }}
+    
+    - name: Deploy to GKE
+      run: |
+        kubectl set image deployment/${{ env.DEPLOYMENT_NAME }} ${{ env.IMAGE_NAME }}=${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:latest
+        kubectl rollout status deployment/${{ env.DEPLOYMENT_NAME }}
+
+
+
+
+
+
