@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - test
 
 env:
   PROJECT_ID: advance-display-462217-r9
