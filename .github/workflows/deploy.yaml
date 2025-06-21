@@ -13,6 +13,7 @@ env:
   REPOSITORY: flask-api-repo
   IMAGE_NAME: flask-api
   DEPLOYMENT_NAME: flask-api
+  IMAGE_TAG: ${{ github.sha }}
 
 jobs:
   build-and-deploy:
@@ -43,11 +44,11 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:latest ./app
+        docker build -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG}} ./app
 
     - name: Push Docker image to Google Container Registry
       run: |
-        docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:latest
+        docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG}}
 
     - name: Get GKE CRED
       run: |
@@ -55,8 +56,8 @@ jobs:
     
     - name: Deploy to GKE
       run: |
+        sed -i "s|__IMAGE_TAG__|${{ env.IMAGE_TAG }}|g" ./k8s/deployment.yaml
         kubectl apply -f ./k8s/deployment.yaml
-        kubectl set image deployment/${{ env.DEPLOYMENT_NAME }} ${{ env.IMAGE_NAME }}=${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:latest
         kubectl rollout status deployment/${{ env.DEPLOYMENT_NAME }}
 
 
