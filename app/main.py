@@ -10,6 +10,10 @@ def version_1():
 def version_2():
     return {"message": "Hello from v2"}, 200
 
+@app.route("/api/v3")
+def version_3():
+    return {"message": "Hello from v3 on main"}, 200    
+
 @app.route("/healthz")
 def health_check():
     return "OK", 200
