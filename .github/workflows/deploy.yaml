@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - test
 
 env:
   PROJECT_ID: advance-display-462217-r9
@@ -27,9 +28,14 @@ jobs:
         credentials_json: ${{ secrets.GCP_SA_KEY }}
 
     - name: Set up Google Cloud SDK
-      uses: google-github-actions/setup-gcloud
+      uses: google-github-actions/setup-gcloud@v2
       with:
         project_id: ${{ env.PROJECT_ID }}
+        install_components: 'gke-gcloud-auth-plugin'
+
+    - name: Get GKE credentials
+      run: |
+        gcloud container clusters get-credentials  ${{ env.CLUSTER_NAME }} --region ${{ env.REGION }} --project ${{ env.PROJECT_ID }}
         
     - name: Configure Docker to use the Google Cloud registry
       run: | 
@@ -37,7 +43,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:latest
+        docker build -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:latest ./app
 
     - name: Push Docker image to Google Container Registry
       run: |
@@ -49,6 +55,7 @@ jobs:
     
     - name: Deploy to GKE
       run: |
+        kubectl apply -f ./k8s/deployment.yaml
         kubectl set image deployment/${{ env.DEPLOYMENT_NAME }} ${{ env.IMAGE_NAME }}=${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:latest
         kubectl rollout status deployment/${{ env.DEPLOYMENT_NAME }}
 
