@@ -12,6 +12,8 @@ spec:
   namespaceSelector:
     matchNames:
       - rollout-ramp-monitoring
+      - default
+  # The namespaceSelector allows the ServiceMonitor to discover services in both the monitoring namespace and the default namespace.
   endpoints:
   - port: http
     path: /metrics
