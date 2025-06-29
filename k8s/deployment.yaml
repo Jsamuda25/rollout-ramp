@@ -1,3 +1,4 @@
+# This file defines a Kubernetes deployment for a Flask API application.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
