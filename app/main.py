@@ -1,7 +1,10 @@
 from flask import Flask
+from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)    
 
+# Define a counter metric
 @app.route("/api/v1")
 def version_1():
     return {"message": "Hello from v1"}, 200
