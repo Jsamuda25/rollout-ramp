@@ -28,3 +28,6 @@ Thumbs.db
 
 # Learning journal
 journal.txt
+
+# Environment variables
+.env

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: flask-api
-        image: northamerica-northeast2-docker.pkg.dev/advance-display-462217-r9/flask-api-repo/flask-api:__IMAGE_TAG__
+        image: northamerica-northeast2-docker.pkg.dev/advance-display-462217-r9/flask-api-repo/flask-api:latest
         ports:
         - containerPort: 5000
         
