@@ -16,6 +16,12 @@ spec:
       containers:
       - name: flask-api
         image: northamerica-northeast2-docker.pkg.dev/advance-display-462217-r9/flask-api-repo/flask-api:latest
+        env:
+        - name: ABUSEIPDB_KEY
+          valueFrom:
+            secretKeyRef:
+              name: abuseipdb-secret
+              key: ABUSEIPDB_API_KEY
         ports:
         - containerPort: 5000
         
