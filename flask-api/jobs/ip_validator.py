@@ -18,7 +18,7 @@ def get_ip_details(ip: str) -> dict:
 
     headers = {
         'Accept': 'application/json',   
-        'Key': Config.IP_LOOKUP_KEY
+        'Key': Config.IPDB_API_KEY
     }
 
     response = requests.request(method='GET', url=url, headers=headers, params=querystring)
@@ -37,7 +37,7 @@ def get_blacklisted_ips(limit: str = '100') -> dict:
 
     headers = {
         'Accept': 'application/json',
-        'Key': Config.IP_LOOKUP_KEY
+        'Key': Config.IPDB_API_KEY
     }
 
     response = requests.request(method='GET', url=url, headers=headers, params=querystring)
