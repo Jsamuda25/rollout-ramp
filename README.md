@@ -1,4 +1,4 @@
-# Description: 
+# Motivation: 
 
 The Security API is a Flask-based application that exposes endpoints for analyzing and validating data. It’s designed to act as a backend service for security automation — taking in IP addresses or URLs, running checks against external threat intelligence sources, and returning structured results.
 
