@@ -28,6 +28,7 @@ Thumbs.db
 
 # Learning journal
 journal.txt
+relaunch.txt
 
 # Environment variables
 .env

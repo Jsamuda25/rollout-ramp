@@ -1,10 +1,8 @@
 from flask import Flask, request, jsonify
-from prometheus_flask_exporter import PrometheusMetrics
 from jobs import url_validator, ip_validator
 
-# Initialize Flask app and Prometheus metrics
-app = Flask(__name__)
-metrics = PrometheusMetrics(app)    
+# Initialize Flask app 
+app = Flask(__name__)  
 
 # Health check endpoint
 @app.route("/health", methods=["GET"])
