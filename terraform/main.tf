@@ -10,7 +10,7 @@ terraform {
 
 provider "google" {
   project = "advance-display-462217-r9"
-  region  = "northamerica-northeast2" 
+  region  = var.region
 }
 
 resource "google_container_cluster" "primary" {
