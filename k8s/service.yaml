@@ -1,3 +1,4 @@
+# This YAML file defines a Kubernetes Service to expose the Flask API application using a LoadBalancer.
 apiVersion: v1
 kind: Service
 metadata:
@@ -6,6 +7,6 @@ spec:
   selector:
     app: flask-api
   ports:
-    - port: 80
-      targetPort: 5000
+    - port: 80 # The port on which the service will be exposed
+      targetPort: 5000 # The port on which the Flask app is running
   type: LoadBalancer

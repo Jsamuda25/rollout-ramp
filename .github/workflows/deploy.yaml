@@ -17,17 +17,20 @@ env:
   IMAGE_TAG: ${{ github.sha }}
 
 jobs:
+  # Create a job called build-and-deploy
   build-and-deploy:
    runs-on: ubuntu-latest
 
    steps:
+    # Checkout the code from the repository, into the GitHub Actions runner
     - name: Checkout code repo
       uses: actions/checkout@v3
-    
+
+    # Set up Google Cloud authentication
     - name: Google authentication
-      uses: google-github-actions/auth@v2
+      uses: google-github-actions/auth@v2 # Use the Google Auth Action
       with:
-        credentials_json: ${{ secrets.GCP_SA_KEY }}
+        credentials_json: ${{ secrets.GCP_SA_KEY }} # Use the secret created earlier
 
     - name: Set up Google Cloud SDK
       uses: google-github-actions/setup-gcloud@v2
