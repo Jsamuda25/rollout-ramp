@@ -14,7 +14,7 @@ env:
   REPOSITORY: flask-api-repo
   IMAGE_NAME: flask-api
   DEPLOYMENT_NAME: flask-api
-  IMAGE_TAG: ${{ github.sha }}
+  IMAGE_TAG: ${{ github.sha }} # Use the commit SHA as the image tag
 
 jobs:
   # Create a job called build-and-deploy
